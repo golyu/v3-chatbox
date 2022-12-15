@@ -11,7 +11,8 @@
   "dependencies": {
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vue3-infinite-list": "^0.2.5"
+    "vue3-infinite-list": "^0.2.5",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "minifaker": "^1.34.1",

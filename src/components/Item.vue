@@ -8,6 +8,7 @@ export default {
 import type { IData } from "@/components/Data";
 import faker from "minifaker";
 import { onMounted, onBeforeUnmount } from "vue";
+import ResizeObserver from "resize-observer-polyfill";
 
 const {
   index,

@@ -11,6 +11,7 @@ specifiers:
   eslint-plugin-vue: ^9.5.1
   minifaker: ^1.34.1
   prettier: ^2.7.1
+  resize-observer-polyfill: ^1.5.1
   sass: ^1.56.1
   typescript: ^4.9.3
   vite: 4.0.1
@@ -20,6 +21,7 @@ specifiers:
   vue3-infinite-list: ^0.2.5
 
 dependencies:
+  resize-observer-polyfill: 1.5.1
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
   vue3-infinite-list: 0.2.5_vue@3.2.45
@@ -1494,6 +1496,10 @@ packages:
     resolution: { integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg== }
     engines: { node: '>=8' }
     dev: true
+
+  /resize-observer-polyfill/1.5.1:
+    resolution: { integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg== }
+    dev: false
 
   /resolve-from/4.0.0:
     resolution: { integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g== }

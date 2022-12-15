@@ -11,7 +11,7 @@ import Placeholder from "@/components/Placeholder.vue";
 import { onMounted } from "vue";
 
 const PLACEHOLDER_COUNT = 5; //占位数量
-const BUFFER_SIZE = 3; //缓冲区大小,上下各缓冲3个
+const BUFFER_SIZE = 3; //缓冲区大小,最多上下各缓冲3个,如果滚动到头部,就只有尾部3个,如果滚动到尾部,就只有头部3个
 const FIXED_HEIGHT = 180; //单个元素固定高度
 let VISIBLE_COUNT = BUFFER_SIZE * 2; //可见数量,初始话的时候,会去重新计算这个值
 const scrollerRef = $ref<HTMLElement | null>(null); //滚动容器
