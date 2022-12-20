@@ -7,6 +7,7 @@ export default {
 import { IData } from "@/components/Data";
 import { fetchDataApi } from "@/components/helpers";
 import Item from "@/components/Item.vue";
+import type { ItemRef } from "@/components/Item_T";
 import Placeholder from "@/components/Placeholder.vue";
 import { onMounted } from "vue";
 
@@ -34,6 +35,7 @@ let anchorItem = $ref<{
   offset: 0,
   index: 0,
 });
+const itemsRef = $ref<ItemRef[]>([]); //列表元素的ref
 
 onMounted(() => {
   //可见数量 = 整个ul的高度 / 固定的高度
@@ -171,9 +173,11 @@ const handleLoadMore = () => {
     />
     <template v-for="item in visibleData" :key="item.username + item.phone">
       <Item
+        ref="itemsRef"
         class="height-fixed__item"
         :data="item"
         :index="item.index"
+        :is-fixed-height="true"
         :style="`transform: translate(0,${item.translateY}px)`"
       />
     </template>

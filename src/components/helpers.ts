@@ -17,7 +17,11 @@ export const fetchDataApi = (count = 30) => {
       email: faker.email(),
       img: {
         isDeffer: faker.boolean(),
-        src: faker.imageUrlFromPlaceIMG({ width: 200, height: 200 }),
+        src: faker.imageUrlFromPlaceIMG({
+          width: faker.number({ min: 20, max: 200 }),
+          height: faker.number({ min: 20, max: 200 }),
+        }),
+        // src: `${import.meta.env.BASE_URL}images/${faker.number({ min: 1, max: 20 })}.jpeg`,
         width: faker.number({ min: 20, max: 200 }),
       },
       username: faker.username(),

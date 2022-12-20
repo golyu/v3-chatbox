@@ -19,3 +19,9 @@ export interface IData {
   translateY: number;
   index: number; // 处在所有数据中的下标,因为显示数据的时候,会将item存入visibleData中,所以需要缓存item在listData中的index
 }
+
+//锚点元素信息
+export type Anchor = {
+  index: number; //锚点元素在所有数据中的索引
+  offsetTop: number; //锚点元素的偏移量,也就是锚点元素不可见部分的高度
+};

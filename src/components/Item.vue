@@ -11,7 +11,7 @@ import { onMounted, onBeforeUnmount } from "vue";
 import ResizeObserver from "resize-observer-polyfill";
 
 const {
-  index,
+  index = 0,
   data,
   isFixedHeight = true,
 } = defineProps<{
@@ -20,31 +20,42 @@ const {
   isFixedHeight: boolean;
 }>();
 let defferImgSrc = $ref("");
+const itemRef = $ref<HTMLLIElement>();
+
+const getHeight = () => {
+  return itemRef!.getBoundingClientRect().height;
+};
+defineExpose({
+  index,
+  getHeight,
+});
 
 //created
+//是否延时加载
 if (data.img.isDeffer) {
-  //是否延时加载
   defferImgSrc = data.img.src;
 } else {
   setTimeout(() => {
     defferImgSrc = data.img.src;
+    data.img.isDeffer = true;
   }, faker.number({ min: 300, max: 5000 }));
 }
-const itemRef = $ref<HTMLElement>();
+
 const emit = defineEmits(["sizeChange"]);
 onMounted(() => {
-  console.log("onMounted");
+  // console.log("onMounted");
   if (isFixedHeight) return;
   //ResizeObserver：是一项新的功能，监听元素的内容矩形大小的变更，并通知做出相应的反应。和document.onresize的功能很相似
   //如果出现兼容性问题,就学element-ui的方式,用第三方库resize-observer-polyfill
   // const ro = new ResizeObserver((entries, observer) => {
   const ro = new ResizeObserver(() => {
     //高度发生变化时,将'sizeChange'事件传递给父组件
+    // console.log("sizeChange", index);
     emit("sizeChange", index);
   });
   itemRef && ro.observe(itemRef);
   onBeforeUnmount(() => {
-    console.log("onBeforeUnmount");
+    // console.log("onBeforeUnmount -> ro.unobserve(itemRef)");
     ro.disconnect();
   });
 });
