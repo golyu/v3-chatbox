@@ -10,6 +10,8 @@ specifiers:
   eslint-plugin-cypress: ^2.12.1
   eslint-plugin-vue: ^9.5.1
   minifaker: ^1.34.1
+  pinia: ^2.0.28
+  pinia-plugin-persistedstate: ^3.0.1
   prettier: ^2.7.1
   resize-observer-polyfill: ^1.5.1
   sass: ^1.56.1
@@ -21,6 +23,8 @@ specifiers:
   vue3-infinite-list: ^0.2.5
 
 dependencies:
+  pinia: 2.0.28_mgnvym7yiazkylwwogi5r767ue
+  pinia-plugin-persistedstate: 3.0.1_pinia@2.0.28
   resize-observer-polyfill: 1.5.1
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
@@ -1442,6 +1446,32 @@ packages:
     engines: { node: '>=8.6' }
     dev: true
 
+  /pinia-plugin-persistedstate/3.0.1_pinia@2.0.28:
+    resolution: { integrity: sha512-WRNWtR4v8StJqBQH+Qiz88SGnlr4wvEyh7wtA+fYEVLoIOnpZ0v4FICvUcC8eUkAIvQL3n6/Ew2yryw7okazvA== }
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.28_mgnvym7yiazkylwwogi5r767ue
+    dev: false
+
+  /pinia/2.0.28_mgnvym7yiazkylwwogi5r767ue:
+    resolution: { integrity: sha512-YClq9DkqCblq9rlyUual7ezMu/iICWdBtfJrDt4oWU9Zxpijyz7xB2xTwx57DaBQ96UGvvTMORzALr+iO5PVMw== }
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.4.5
+      typescript: 4.9.3
+      vue: 3.2.45
+      vue-demi: 0.13.11_vue@3.2.45
+    dev: false
+
   /postcss-selector-parser/6.0.11:
     resolution: { integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g== }
     engines: { node: '>=4' }
@@ -1656,7 +1686,6 @@ packages:
     resolution: { integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA== }
     engines: { node: '>=4.2.0' }
     hasBin: true
-    dev: true
 
   /uri-js/4.4.1:
     resolution: { integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg== }

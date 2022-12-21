@@ -16,6 +16,10 @@ const routes = [
     path: "/height-fixed",
     component: HeightFixed,
   },
+  {
+    path: "/chat-box",
+    component: () => import("@/components/chat/ChatBox.vue"),
+  },
 ];
 
 const router = createRouter({
