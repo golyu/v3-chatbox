@@ -251,22 +251,24 @@ const handleLoadMore = () => {
 };
 
 //下拉占位符的Y轴偏移量
-const pullDownPlaceholderTranslateY = $computed(
-  () => (index: number) =>
-    cachedTranslateY[firstAttachedItem] - ESTIMATED_HEIGHT * (index + 1)
-);
+const pullDownPlaceholderTranslateY = $computed(() => {
+  const temp = cachedTranslateY[firstAttachedItem] - ESTIMATED_HEIGHT;
+  return (index: number) => temp - ESTIMATED_HEIGHT * index;
+});
+
 //item的Y轴偏移量
 const itemTranslateY = $computed(
   () => (index: number) => cachedTranslateY[index] || index * ESTIMATED_HEIGHT
 );
 
 //上拉占位符的Y轴偏移量
-const pullUpPlaceholderTranslateY = $computed(
-  () => (index: number) =>
+const pullUpPlaceholderTranslateY = $computed(() => {
+  const temp =
     cachedTranslateY[lastAttachedItem - 1] +
     cachedHeight[lastAttachedItem - 1] +
-    ESTIMATED_HEIGHT * (index + 1)
-);
+    ESTIMATED_HEIGHT;
+  return (index: number) => temp + ESTIMATED_HEIGHT * index;
+});
 
 // const computePullDownPlaceholderTranslateY = () => {};
 </script>
