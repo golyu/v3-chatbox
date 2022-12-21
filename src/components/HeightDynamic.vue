@@ -125,6 +125,7 @@ const computeItemTranslateY = async () => {
 };
 
 //item的尺寸发生变化时,重新计算translateY
+// noinspection JSUnusedLocalSymbols
 const handleSizeChange = (index: number) => {
   // console.log("尺寸变化" + index);
   computeItemTranslateY();

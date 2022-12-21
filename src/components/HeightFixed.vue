@@ -1,4 +1,5 @@
 <script lang="ts">
+// noinspection JSUnusedGlobalSymbols
 export default {
   name: "HeightFixed", //固定高度
 };
@@ -11,6 +12,7 @@ import type { ItemRef } from "@/components/Item_T";
 import Placeholder from "@/components/Placeholder.vue";
 import { onMounted } from "vue";
 
+// noinspection JSUnusedGlobalSymbols
 const PLACEHOLDER_COUNT = 5; //占位数量
 const BUFFER_SIZE = 3; //缓冲区大小,最多上下各缓冲3个,如果滚动到头部,就只有尾部3个,如果滚动到尾部,就只有头部3个
 const FIXED_HEIGHT = 180; //单个元素固定高度
@@ -130,6 +132,7 @@ const updateAnchorItem = () => {
 //更新占位
 //isPositive:滚动方向
 //todo 占位不使用好像也没啥问题,先不使用
+// noinspection JSUnusedLocalSymbols
 const updatePlaceholder = (isPositive: boolean) => {
   // if (isPositive) {
   //   //向下滚动
