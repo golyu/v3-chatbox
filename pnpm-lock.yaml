@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@rushstack/eslint-patch': ^1.1.4
   '@types/node': ~16.11.7
+  '@types/smoothscroll-polyfill': ^0.3.1
   '@vitejs/plugin-vue': ^4.0.0
   '@vue/eslint-config-prettier': ^7.0.0
   '@vue/eslint-config-typescript': ^11.0.0
@@ -15,6 +16,7 @@ specifiers:
   prettier: ^2.7.1
   resize-observer-polyfill: ^1.5.1
   sass: ^1.56.1
+  smoothscroll-polyfill: ^0.4.4
   typescript: ^4.9.3
   vite: 4.0.1
   vue: ^3.2.45
@@ -26,6 +28,7 @@ dependencies:
   pinia: 2.0.28_mgnvym7yiazkylwwogi5r767ue
   pinia-plugin-persistedstate: 3.0.1_pinia@2.0.28
   resize-observer-polyfill: 1.5.1
+  smoothscroll-polyfill: 0.4.4
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
   vue3-infinite-list: 0.2.5_vue@3.2.45
@@ -33,6 +36,7 @@ dependencies:
 devDependencies:
   '@rushstack/eslint-patch': 1.2.0
   '@types/node': 16.11.68
+  '@types/smoothscroll-polyfill': 0.3.1
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.1+vue@3.2.45
   '@vue/eslint-config-prettier': 7.0.0_5qrnzwqb344w6up62gv3safeoi
   '@vue/eslint-config-typescript': 11.0.2_vf5i6yh7tubwt4lqvaz2kfrjpa
@@ -341,6 +345,10 @@ packages:
 
   /@types/semver/7.3.13:
     resolution: { integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw== }
+    dev: true
+
+  /@types/smoothscroll-polyfill/0.3.1:
+    resolution: { integrity: sha512-+KkHw4y+EyeCtVXET7woHUhIbfWFCflc0E0mZnSV+ZdjPQeHt/9KPEuT7gSW/kFQ8O3EG30PLO++YhChDt8+Ag== }
     dev: true
 
   /@types/uuid/8.3.4:
@@ -1605,6 +1613,10 @@ packages:
     resolution: { integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q== }
     engines: { node: '>=8' }
     dev: true
+
+  /smoothscroll-polyfill/0.4.4:
+    resolution: { integrity: sha512-TK5ZA9U5RqCwMpfoMq/l1mrH0JAR7y7KRvOBx0n2869aLxch+gT9GhN3yUfjiw+d/DiF1mKo14+hd62JyMmoBg== }
+    dev: false
 
   /source-map-js/1.0.2:
     resolution: { integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw== }

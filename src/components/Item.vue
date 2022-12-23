@@ -25,10 +25,6 @@ const itemRef = $ref<HTMLLIElement>();
 const getHeight = () => {
   return itemRef!.getBoundingClientRect().height;
 };
-defineExpose({
-  index,
-  getHeight,
-});
 
 //created
 //是否延时加载
@@ -48,16 +44,24 @@ onMounted(() => {
   //ResizeObserver：是一项新的功能，监听元素的内容矩形大小的变更，并通知做出相应的反应。和document.onresize的功能很相似
   //如果出现兼容性问题,就学element-ui的方式,用第三方库resize-observer-polyfill
   // const ro = new ResizeObserver((entries, observer) => {
-  const ro = new ResizeObserver(() => {
+  const ro = new ResizeObserver((entries) => {
     //高度发生变化时,将'sizeChange'事件传递给父组件
-    // console.log("sizeChange", index);
-    emit("sizeChange", index);
+    const entry = entries[0];
+    if (entry) {
+      const height = entry.contentRect.top * 2 + entry.contentRect.height; //所以li的padding-top和padding-bottom要相等,计算才会正确
+      emit("sizeChange", index, height);
+    }
   });
   itemRef && ro.observe(itemRef);
   onBeforeUnmount(() => {
     // console.log("onBeforeUnmount -> ro.unobserve(itemRef)");
     ro.disconnect();
   });
+});
+
+defineExpose({
+  index,
+  getHeight,
 });
 </script>
 <template>
@@ -66,7 +70,6 @@ onMounted(() => {
       <div class="item__info">
         <img class="item__avatar" :src="data.avatar" alt="" />
         <p class="item__name">{{ index }}.{{ data.name }}</p>
-        <p class="item_date">{{ data.dob }}</p>
       </div>
       <template v-if="isFixedHeight">
         <p class="item__text">E-Mail:{{ data.email }}</p>
@@ -75,19 +78,22 @@ onMounted(() => {
         <p class="item__text">Street: {{ data.address.street }}</p>
       </template>
       <template v-else>
-        <p class="item__paragraph">{{ data.paragraph }}</p>
-        <img
-          class="item__img"
-          :style="{ width: data.img.width }"
-          :src="defferImgSrc"
-          alt=""
-        />
-        <img
-          class="item__img"
-          :style="{ width: data.img.width }"
-          :src="data.img.src"
-          alt=""
-        />
+        <div>
+          <p class="item_date">{{ data.dob }}</p>
+          <p class="item__paragraph">{{ data.paragraph }}</p>
+          <img
+            class="item__img"
+            :style="{ width: data.img.width }"
+            :src="defferImgSrc"
+            alt=""
+          />
+          <img
+            class="item__img"
+            :style="{ width: data.img.width }"
+            :src="data.img.src"
+            alt=""
+          />
+        </div>
       </template>
     </div>
   </li>
@@ -100,10 +106,12 @@ onMounted(() => {
 
 .item {
   &__wrapper {
+    //transform: rotate(180deg); // 将组件旋转180度，将父组件的反转补偿回来
     padding: 0 20px 20px;
     background-color: #ffffff;
     border: 1px solid #eaeaea;
     border-radius: 5px;
+    display: flex;
   }
 
   &__is-fixed {

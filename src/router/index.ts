@@ -20,6 +20,10 @@ const routes = [
     path: "/chat-box",
     component: () => import("@/components/chat/ChatBox.vue"),
   },
+  {
+    path: "/chat-box2",
+    component: () => import("@/components/ChatDemo.vue"),
+  },
 ];
 
 const router = createRouter({

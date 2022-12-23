@@ -12,7 +12,8 @@ import type { ItemRef } from "@/components/Item_T";
 import Placeholder from "@/components/Placeholder.vue";
 import { useMsgManagerStore } from "@/store/modules/msgManager";
 import { storeToRefs } from "pinia";
-import { onMounted, nextTick } from "vue";
+import smoothScroll from "smoothscroll-polyfill";
+import { onMounted, nextTick, watch } from "vue";
 import { $computed, $ref } from "vue/macros";
 import { fetchDataApi } from "@/components/helpers";
 
@@ -49,15 +50,42 @@ let revising = $ref(false); //是否正在修正滚动位置
 
 const scrollerRef = $ref<HTMLElement>(); //滚动容器的ref
 const itemsRef = $ref<ItemRef[]>([]); //列表元素的ref
+let goBottomSwitch = $ref(true); //置底开关
+
+watch(msgManagerStore.msgList, () => {
+  console.log("msgList", "发生变化");
+  //数据发生变化时,判断是否开启了置底,如果开启了,则滚动到底部
+  if (goBottomSwitch && scrollerRef!.scrollTop > 0) {
+    goBottom();
+  }
+  computeItemTranslateY("msgList变化");
+});
+
+smoothScroll.polyfill(); //对平滑滚动做的 兼容性处理
 onMounted(() => {
   //可见元素数量 = ul的高度/单个列表元素的估算高度
   VISIBLE_COUNT = Math.ceil(scrollerRef!.offsetHeight / ESTIMATED_HEIGHT);
   //初始挂载的时候,上部没有缓冲区,下部有缓冲区
   //所以最后一个挂载元素的索引+1 = 可见元素数量 + 缓冲区大小
   lastAttachedItem = VISIBLE_COUNT + BUFFER_SIZE;
-  fetchData(); //获取数据
+  // fetchData(); //获取数据
   updateVisibleData(); //更新可见数据
 });
+
+const handleScroll = () => {
+  console.log("触发滚动事件");
+  if (revising) return;
+  const delta = scrollerRef!.scrollTop - lastScrollTop;
+  if (delta === 0) {
+    console.log("滚动距离为0");
+    return;
+  }
+  lastScrollTop = scrollerRef!.scrollTop;
+  updateAnchorItem(delta);
+  updateVisibleData();
+  updatePlaceholder(delta > 0);
+  // handleLoadMore();
+};
 
 //从api获取数据,补充到listData中
 const fetchData = () => {
@@ -82,7 +110,7 @@ const updateVisibleData = () => {
 
 //计算每一个列表元素的translateY
 //translateY 元素在Y轴的偏移量
-const computeItemTranslateY = async () => {
+const computeItemTranslateY = async (t: string) => {
   //nextTick 等待下一次 DOM 更新刷新的工具方法
   await nextTick(); //数据改变后,等待dom刷新后,做后面的事情
   //修正vue diff算法导致item顺序不正确的问题 https://cn.vuejs.org/guide/essentials/template-refs.html#refs-inside-v-for
@@ -94,7 +122,7 @@ const computeItemTranslateY = async () => {
   const anchorDomIndex = itemsRef.findIndex(
     (item) => item.index === anchorItem.index
   );
-
+  // if (anchorDomIndex === -1) return; //如果锚点元素的真实dom不存在,就返回
   const anchorDom = itemsRef[anchorDomIndex];
 
   const anchorDomHeight = anchorDom.getHeight(); //锚点元素的高度
@@ -136,9 +164,9 @@ const computeItemTranslateY = async () => {
 
 //item的尺寸发生变化时,重新计算translateY
 // noinspection JSUnusedLocalSymbols
-const handleSizeChange = (index: number) => {
+const handleSizeChange = (index: number, height: number) => {
   // console.log("尺寸变化" + index);
-  computeItemTranslateY();
+  computeItemTranslateY("尺寸变化");
 };
 
 //跑道(滚动容器)的高度(估算值)
@@ -160,20 +188,6 @@ const scrollRunwayEnd = $computed(() => {
     );
   }
 });
-
-const handleScroll = () => {
-  if (revising) return;
-  const delta = scrollerRef!.scrollTop - lastScrollTop;
-  if (delta === 0) {
-    console.log("滚动距离为0");
-    return;
-  }
-  lastScrollTop = scrollerRef!.scrollTop;
-  updateAnchorItem(delta);
-  updateVisibleData();
-  updatePlaceholder(delta > 0);
-  handleLoadMore();
-};
 
 //更新锚点元素
 const updateAnchorItem = (delta: number) => {
@@ -199,6 +213,7 @@ const updateAnchorItem = (delta: number) => {
       anchorItem = { index, offsetTop: delta };
     }
   } else {
+    //向上滚动
     while (delta < 0) {
       if (!cachedHeight[index - 1]) {
         cachedHeight[index - 1] = ESTIMATED_HEIGHT;
@@ -224,7 +239,7 @@ const updateAnchorItem = (delta: number) => {
     if (scrollerRef!.scrollTop === 0) {
       anchorItem = { index: 0, offsetTop: 0 };
     }
-    computeItemTranslateY();
+    computeItemTranslateY("更新锚点");
     revising = false;
   }
 };
@@ -270,53 +285,85 @@ const pullUpPlaceholderTranslateY = $computed(() => {
   return (index: number) => temp + ESTIMATED_HEIGHT * index;
 });
 
-// const computePullDownPlaceholderTranslateY = () => {};
+watch(scrollRunwayEnd, () => {
+  goBottom();
+});
+
+//跳转到最新的消息
+const goBottom = () => {
+  scrollerRef!.scroll({ top: 0, left: 0, behavior: "smooth" });
+};
+defineExpose({ goBottom });
 </script>
 <template>
-  <ul ref="scrollerRef" class="height-dynamic" @scroll="handleScroll">
-    <!-- 负责撑开ul的高度   -->
-    <li
-      class="height-dynamic__scroll-runway"
-      :style="`transform: translate(0, ${scrollRunwayEnd}px)`"
-    ></li>
-    <!--  下拉占位符  -->
-    <!--suppress JSUnusedLocalSymbols -->
-    <Placeholder
-      class="height-dynamic__placeholder"
-      v-for="(item, index) in topPlaceholders"
-      :key="-index - 1"
-      :style="`transform: translate(0,${pullDownPlaceholderTranslateY(
-        index
-      )}px)`"
-    />
-    <!--  列表元素  -->
-    <Item
-      class="height-dynamic__item"
-      v-for="item in visibleData"
-      ref="itemsRef"
-      :data="item"
-      :is-fixed-height="false"
-      :key="item.username + item.phone"
-      :index="item.index"
-      :style="`transform: translate(0,${itemTranslateY(item.index)}px)`"
-      @sizeChange="handleSizeChange"
-    />
-    <!--  上拉占位符  -->
-    <!--suppress JSUnusedLocalSymbols -->
-    <Placeholder
-      class="height-dynamic__placeholder"
-      v-for="(item, index) in bottomPlaceholders"
-      :key="index + 1"
-      :style="`transform: translate(0,${pullUpPlaceholderTranslateY(index)}px)`"
-    />
-  </ul>
+  <div class="room-level1">
+    <ul ref="scrollerRef" class="height-dynamic" @scroll="handleScroll">
+      <!-- 负责撑开ul的高度   -->
+      <li
+        class="height-dynamic__scroll-runway"
+        :style="`transform: translate(0, ${scrollRunwayEnd}px)`"
+      ></li>
+      <!--  下拉占位符  -->
+      <!--suppress JSUnusedLocalSymbols -->
+      <Placeholder
+        class="height-dynamic__placeholder"
+        v-for="(item, index) in topPlaceholders"
+        :key="-index - 1"
+        :style="`transform: translate(0,${pullDownPlaceholderTranslateY(
+          index
+        )}px)`"
+      />
+      <!--  列表元素  -->
+      <Item
+        class="height-dynamic__item"
+        v-for="item in visibleData"
+        ref="itemsRef"
+        :data="item"
+        :is-fixed-height="false"
+        :key="item.username + item.phone"
+        :index="item.index"
+        :style="`transform: translate(0,${itemTranslateY(item.index)}px)`"
+        @sizeChange="handleSizeChange"
+      />
+      <!--  上拉占位符  -->
+      <!--suppress JSUnusedLocalSymbols -->
+      <Placeholder
+        class="height-dynamic__placeholder"
+        v-for="(item, index) in bottomPlaceholders"
+        :key="index + 1"
+        :style="`transform: translate(0,${pullUpPlaceholderTranslateY(
+          index
+        )}px)`"
+      />
+    </ul>
+  </div>
+  <div class="to-bottom-btn">
+    <button @click="goBottom">跳转到底部</button>
+  </div>
 </template>
 <style lang="scss" scoped>
+//最底层的容器
+.room-level1 {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.to-bottom-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  z-index: 100;
+}
+
 .height-dynamic {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   overflow-y: scroll;
+  //transform: rotate(180deg); // 将组件旋转180度，使得滚动条在组件的上方
+  //scroll-behavior: smooth;//平滑滚动,兼容性存在问题
   -webkit-overflow-scrolling: touch;
   width: 100%;
   height: 100%;
