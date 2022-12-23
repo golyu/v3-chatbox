@@ -17,7 +17,9 @@ export interface IData {
   };
   //
   translateY: number;
-  index: number; // 处在所有数据中的下标,因为显示数据的时候,会将item存入visibleData中,所以需要缓存item在listData中的index
+  keyIndex: number; // 处在所有数据中的下标,因为显示数据的时候,会将item存入visibleData中,所以需要缓存item在listData中的index
+  myKey: string; // 用于v-for的key
+  timestamp: number; // 时间戳
 }
 
 //锚点元素信息

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@rushstack/eslint-patch': ^1.1.4
+  '@types/lodash-es': ^4.17.6
   '@types/node': ~16.11.7
   '@types/smoothscroll-polyfill': ^0.3.1
   '@vitejs/plugin-vue': ^4.0.0
@@ -10,6 +11,7 @@ specifiers:
   eslint: ^8.22.0
   eslint-plugin-cypress: ^2.12.1
   eslint-plugin-vue: ^9.5.1
+  lodash-es: ^4.17.21
   minifaker: ^1.34.1
   pinia: ^2.0.28
   pinia-plugin-persistedstate: ^3.0.1
@@ -25,6 +27,7 @@ specifiers:
   vue3-infinite-list: ^0.2.5
 
 dependencies:
+  lodash-es: 4.17.21
   pinia: 2.0.28_mgnvym7yiazkylwwogi5r767ue
   pinia-plugin-persistedstate: 3.0.1_pinia@2.0.28
   resize-observer-polyfill: 1.5.1
@@ -35,6 +38,7 @@ dependencies:
 
 devDependencies:
   '@rushstack/eslint-patch': 1.2.0
+  '@types/lodash-es': 4.17.6
   '@types/node': 16.11.68
   '@types/smoothscroll-polyfill': 0.3.1
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.1+vue@3.2.45
@@ -337,6 +341,16 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: { integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ== }
+    dev: true
+
+  /@types/lodash-es/4.17.6:
+    resolution: { integrity: sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg== }
+    dependencies:
+      '@types/lodash': 4.14.191
+    dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: { integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ== }
     dev: true
 
   /@types/node/16.11.68:
@@ -1296,6 +1310,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash-es/4.17.21:
+    resolution: { integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw== }
+    dev: false
 
   /lodash.merge/4.6.2:
     resolution: { integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ== }

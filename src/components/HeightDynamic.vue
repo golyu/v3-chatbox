@@ -54,7 +54,7 @@ const fetchData = () => {
   const data = fetchDataApi();
   //给每个item打上序号标记,并补充到listData中
   for (let datum of data) {
-    datum.index = listData.length;
+    datum.keyIndex = listData.length;
     listData.push(datum);
   }
   updateVisibleData(); //更新可见数据
@@ -288,8 +288,8 @@ const pullUpPlaceholderTranslateY = $computed(
       :data="item"
       :is-fixed-height="false"
       :key="item.username + item.phone"
-      :index="item.index"
-      :style="`transform: translate(0,${itemTranslateY(item.index)}px)`"
+      :index="item.keyIndex"
+      :style="`transform: translate(0,${itemTranslateY(item.keyIndex)}px)`"
       @sizeChange="handleSizeChange"
     />
     <!--  上拉占位符  -->

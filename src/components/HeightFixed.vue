@@ -65,7 +65,7 @@ const calItemScrollY = (list: IData[]) => {
     const item = list[i];
     //如果item是第0元素,那么它的translateY就是0*FIXED_HEIGHT,如果是第1个元素,那么它的translateY就是1*FIXED_HEIGHT
     item.translateY = latestIndex * FIXED_HEIGHT;
-    item.index = latestIndex;
+    item.keyIndex = latestIndex;
     Object.freeze(item); //冻结一个对象。 一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性
   }
   return list;
@@ -179,7 +179,7 @@ const handleLoadMore = () => {
         ref="itemsRef"
         class="height-fixed__item"
         :data="item"
-        :index="item.index"
+        :index="item.keyIndex"
         :is-fixed-height="true"
         :style="`transform: translate(0,${item.translateY}px)`"
       />

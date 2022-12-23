@@ -3,7 +3,9 @@
     <button @click="onAddMsg" style="padding: 10px">增加数据</button>
   </div>
 
-  <ChatBox ref="chatBoxRef" />
+  <ChatBox #item="item" :cache-data-len="100">
+    <ChatItem :index="item.index" :data="item" />
+  </ChatBox>
 </template>
 
 <script lang="ts">
@@ -13,8 +15,9 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import ChatBox from "@/components/chat/ChatBox.vue";
+import ChatBox from "@/components/chat2/ChatBox.vue";
 import { ChatBoxRef } from "@/components/chat/ChatBox_T";
+import ChatItem from "@/components/chat2/ChatItem.vue";
 import { fetchDataApi } from "@/components/helpers";
 import { useMsgManagerStore } from "@/store/modules/msgManager";
 

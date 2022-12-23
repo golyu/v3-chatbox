@@ -321,8 +321,8 @@ defineExpose({ goBottom });
         :data="item"
         :is-fixed-height="false"
         :key="item.username + item.phone"
-        :index="item.index"
-        :style="`transform: translate(0,${itemTranslateY(item.index)}px)`"
+        :index="item.keyIndex"
+        :style="`transform: translate(0,${itemTranslateY(item.keyIndex)}px)`"
         @sizeChange="handleSizeChange"
       />
       <!--  上拉占位符  -->

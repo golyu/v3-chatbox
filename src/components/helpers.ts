@@ -6,7 +6,9 @@ export const fetchDataApi = (count = 30) => {
   const result: IData[] = [];
   for (let i = 0; i < count; i++) {
     const item: IData = {
-      index: 0,
+      timestamp: Date.now(),
+      myKey: "",
+      keyIndex: 0,
       translateY: 0,
       address: {
         city: faker.cityName(),
