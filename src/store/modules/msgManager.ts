@@ -1,6 +1,6 @@
 import { IData } from "@/components/Data";
+import { uniqueId } from "@/components/utils";
 import { store } from "@/store";
-import { uniqueId } from "lodash-es";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
@@ -8,22 +8,18 @@ export const useMsgManagerStore = defineStore(
   "msg-manager",
   () => {
     const msgList = ref<IData[]>([]);
+    const historyList = ref<IData[]>([]);
     const addMsg = (msg: IData) => {
-      // if (msgList.value.length > 100) {
-      //   const temp = msgList.value.pop();
-      //   if (temp) {
-      //     msg.index = temp.index + msgList.value.length;
-      //     msgList.value.unshift(msg);
-      //   }
-      // } else {
-      //   msg.index = msgList.value.length;
-      //   msgList.value.unshift(msg);
-      // }
-      // msg.index = msgList.value.length;
-      // if (msgList.value.length > 100) {
-      //   msgList.value.pop();
-      // }
-      msg.myKey = uniqueId("t_");
+      msg.myKey = uniqueId();
+      //大于500条数据,就存入多余的数据到historyList中
+      if (msgList.value.length > 500) {
+        //大于20000条数据,就删除最早的数据
+        if (historyList.value.length > 20000) {
+          historyList.value.shift();
+        }
+        const leftData = msgList.value.shift();
+        leftData && historyList.value.push(leftData);
+      }
       msgList.value.push(msg);
     };
     const getVisibleMsgList = (start: number, end: number) => {
@@ -47,10 +43,27 @@ export const useMsgManagerStore = defineStore(
     const msgLen = computed(() => msgList.value.length);
 
     // return { msgList, msgLen: $$(msgLen), addMsg, getVisibleMsgList };
-    return { msgList, msgLen, addMsg, getVisibleMsgList, getMsgList4Len };
+    return {
+      msgList,
+      msgLen,
+      addMsg,
+      getVisibleMsgList,
+      getMsgList4Len,
+      historyList,
+    };
   },
   {
-    persist: true, // 注意,不import store,这里会报类型错误
+    // persist: true, // 注意,不import store,这里会报类型错误
+    persist: [
+      {
+        paths: ["msgList"],
+        key: "msg-manager-list",
+      },
+      {
+        paths: ["historyList"],
+        key: "msg-manager-history",
+      },
+    ],
   }
 );
 
